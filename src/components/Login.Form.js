@@ -35,7 +35,7 @@ class LoginForm extends React.Component {
   
   render() {
     return (
-      <div>
+      <section className="section">
         <h3>Ingresar Usuario</h3>
         <form action="" onSubmit={this.handleSubmit} id="form_login">
           <div className="form-group">
@@ -62,7 +62,7 @@ class LoginForm extends React.Component {
             <input type="submit" value="Ingresar" className="btn btn-primary" />
           </div>
         </form>
-      </div>
+      </section>
     );
   }
 }

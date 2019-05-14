@@ -12,6 +12,12 @@ class UserController extends Controller{
     return JWT::encode( $pay, env( "JWT_KEY") );
   }
 
+  private function decode_jwt( $jwt ){
+
+    return JWT::decode( $jwt,  env("JWT_KEY"), array("HS256") );
+    
+  }
+
   public function login( Request $request ){
     
     $user = User::where('email', $request->input('email'))->first();
@@ -21,9 +27,10 @@ class UserController extends Controller{
     }   
 
     return response()->json(array("token" => $this->jwt( $user->id ) ) );
-    
-    
-    
+  }
+
+  public function showDecode( Request $request ){
+
     
   }
   

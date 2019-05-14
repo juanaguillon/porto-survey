@@ -1,22 +1,41 @@
-import React from 'react';
-import { BrowserRouter, Switch, Route } from "react-router-dom";
-import Layout from './pages/Layout';
+import React from "react";
+import { BrowserRouter, Switch, Route, Redirect } from "react-router-dom";
+import Layout from "./pages/Layout";
+import './style.css';
 
-import $ from 'jquery';
-import Popper from 'popper.js';
-import FormLogin from './components/Login.Form';
-import 'bootstrap/dist/css/bootstrap.min.css';
+import "jquery";
+import "popper.js";
+import 'bootstrap/dist/js/bootstrap';
+import FormLogin from "./components/Login.Form";
+import ProtectedForm from './components/Protected.Form';
+import "bootstrap/dist/css/bootstrap.min.css";
+
+const PrivateRouter = ({ component: Component, ...rest }) => {
+  return (
+    <Route
+      {...rest}
+      render={props => {
+        return localStorage.getItem("token_id") !== null ? (
+          <Component {...props} />
+        ) : (
+          <Redirect to="/" />
+        );
+      }}
+    />
+  );
+};
 
 function App() {
   return (
-    <BrowserRouter >
+    <BrowserRouter>
       <Layout>
         <Switch>
-          <Route exact path="/" component={FormLogin}></Route>
+          <Route exact path="/" component={FormLogin} />
+          <PrivateRouter path="/protected" component={ProtectedForm} />
         </Switch>
       </Layout>
     </BrowserRouter>
-    );
+  );
 }
 
 export default App;
