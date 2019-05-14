@@ -16,7 +16,11 @@ class LoginForm extends React.Component {
   handleSubmit = e => {
     e.preventDefault();
     let http = new HttpClass('http://localhost:80');
-    http.post('user/login', this.state ).then( f => console.log( f ));  
+    http.post('user/login', this.state ).then( f => {
+      if ( typeof f.token !== "undefined"){
+        localStorage.setItem( "token_id", f.token)
+      }
+    });  
   }
 
   /** Comando al cambiar un  */
