@@ -7,23 +7,23 @@ import "jquery";
 import "popper.js";
 import 'bootstrap/dist/js/bootstrap';
 import FormLogin from "./components/Login.Form";
-import ProtectedForm from './components/Protected.Form';
+import Protected from './pages/Protected';
 import "bootstrap/dist/css/bootstrap.min.css";
 
-const PrivateRouter = ({ component: Component, ...rest }) => {
-  return (
-    <Route
-      {...rest}
-      render={props => {
-        return localStorage.getItem("token_id") !== null ? (
-          <Component {...props} />
-        ) : (
-          <Redirect to="/" />
-        );
-      }}
-    />
-  );
-};
+// const PrivateRouter = ({ component: Component, ...rest }) => {
+//   return (
+//     <Route
+//       {...rest}
+//       render={props => {
+//         return localStorage.getItem("token_id") !== null ? (
+//           <Component {...props} />
+//         ) : (
+//           <Redirect to="/" />
+//         );
+//       }}
+//     />
+//   );
+// };
 
 function App() {
   return (
@@ -31,7 +31,7 @@ function App() {
       <Layout>
         <Switch>
           <Route exact path="/" component={FormLogin} />
-          <PrivateRouter path="/protected" component={ProtectedForm} />
+          <Route path="/protected" component={Protected} />
         </Switch>
       </Layout>
     </BrowserRouter>
