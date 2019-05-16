@@ -12,9 +12,13 @@
 */
 
 $router->get('/', function () use ($router) {
-    return $router->app->version();
+	return $router->app->version();
 });
 
-$router->group(["prefix" => "user"], function ( ) use ( $router) {
-    $router->post('/login', "UserController@login");
+$router->group(["prefix" => "user"], function () use ($router) {
+	$router->post('/login', "UserController@login");
+});
+
+$router->group(["prefix" => "structure"], function () use ($router) {
+	$router->post('/create', "QuestioStructureController@create");
 });
