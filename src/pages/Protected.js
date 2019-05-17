@@ -6,12 +6,32 @@ import HttpClass from "../services/Http";
 
 class Protected extends React.Component {
   state = {
-    formData: {}
+    formData: [],
+    savedFormData: []
   };
 
   constructor(props) {
     super(props);
     this.props = props;
+  }
+
+  componentDidMount() {
+    /**
+     * Este proceso será lanzado para mostrar los guardados anteriormente.
+     * */
+    this.__getStructureQuestionsFromDatabase().then(data => {
+      this.setState({
+        savedFormData: data
+      });
+    });
+  }
+
+  /**
+   * Obtener la estructura de preguntas desde la base de datos.
+   */
+  async __getStructureQuestionsFromDatabase() {
+    let http = new HttpClass();
+    return await http.get("structure/all").then(response => response);
   }
 
   /**
@@ -20,28 +40,35 @@ class Protected extends React.Component {
    */
   saveFormData(data) {
     let http = new HttpClass();
-    http.post("structure/create", data).then(response => {
-      if (
-        typeof response.status !== "undefined" &&
-        response.status === "success"
-      ) {
-        this.setState({
-          formData: response
-        });
-      } else {
-        console.log(response);
-      }
-    })
-    .catch( erro => {
-      console.log( erro );
-    })
+    http
+      .post("structure/create", data)
+      .then(response => {
+        if (
+          typeof response.status !== "undefined" &&
+          response.status === "success"
+        ) {
+          this.__getStructureQuestionsFromDatabase().then(data => {
+            this.setState({
+              formData: data
+            });
+          });
+        } else {
+          console.log(response);
+        }
+      })
+      .catch(erro => {
+        console.log(erro);
+      });
   }
 
   render() {
     return (
       <React.Fragment>
         <ProtectedForm formData={this.saveFormData.bind(this)} />
-        <ProtectedData formData={this.state.formData} />
+        <ProtectedData
+          savedFormData={this.state.savedFormData}
+          formData={this.state.formData}
+        />
       </React.Fragment>
     );
   }

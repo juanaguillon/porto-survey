@@ -27,5 +27,9 @@ class QuestioStructureController extends Controller{
     
 
   }
+
+  public function getAll( ){
+    return response()->json( Question::all() );
+  }
   
 }
