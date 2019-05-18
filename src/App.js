@@ -1,6 +1,7 @@
 import React from "react";
-import { BrowserRouter, Switch, Route, Redirect } from "react-router-dom";
+import { BrowserRouter, Switch, Route } from "react-router-dom";
 import Layout from "./pages/Layout";
+// import "font-awesome/css/font-awesome.min.css";
 import './style.css';
 
 import "jquery";

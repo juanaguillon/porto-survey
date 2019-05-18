@@ -15,12 +15,19 @@ const CardData = props => {
   let className = typeof props.className !== "undefined" ? props.className : "";
 
   return (
-    <div className="col-md-4">
+    <div className="col-md-4 my-3">
       <div className={className + " card"}>
-        <h5 className="card-header">{props.text}</h5>
+        <h5 className="card-header">{typeText}</h5>
         <div className="card-body">
-          <h5 className="card-title text-muted">{typeText}</h5>
-          <button className="btn btn-primary btn-sm">&#10005;</button>
+          <h5 className="card-title text-muted">{props.text}</h5>
+        </div>
+        <div className="card-footer text-muted d-flex justify-content-between">
+          <button className="btn btn-primary btn-sm">
+            <i className="fas fa-edit" />
+          </button>
+          <button className="btn btn-danger btn-sm ">
+            <i className="fas fa-trash-alt" />
+          </button>
         </div>
       </div>
     </div>
@@ -35,6 +42,7 @@ function ProtectedData(props) {
           return (
             <CardData
               key={index}
+              className="border-success"
               text={data.text_field}
               type={data.type_field}
             />
@@ -44,7 +52,6 @@ function ProtectedData(props) {
           return (
             <CardData
               key={index}
-              className="border-success"
               text={data.text_field}
               type={data.type_field}
             />

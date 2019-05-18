@@ -47,10 +47,10 @@ class Protected extends React.Component {
           typeof response.status !== "undefined" &&
           response.status === "success"
         ) {
-          this.__getStructureQuestionsFromDatabase().then(data => {
-            this.setState({
-              formData: data
-            });
+          let currentFormData = this.state.formData;
+          currentFormData.unshift(response.last_saved);
+          this.setState({
+            formData: currentFormData
           });
         } else {
           console.log(response);

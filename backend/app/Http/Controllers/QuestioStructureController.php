@@ -17,7 +17,10 @@ class QuestioStructureController extends Controller{
 
       $newQuestion = Question::create($request->all());
       if ($newQuestion) {
-        return response()->json(array("status" => "success"));
+        return response()->json(array(
+          "status" => "success",
+          "last_saved" => $newQuestion
+        ));
       } else {
         return response()->json(array("error" => "Error al crear una nueva estructura de pregunta"));
       } 
@@ -29,7 +32,8 @@ class QuestioStructureController extends Controller{
   }
 
   public function getAll( ){
-    return response()->json( Question::all() );
+    $question = new Question();
+    return response()->json( $question->orderBy("updated_at","DESC")->get());
   }
   
 }
