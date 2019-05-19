@@ -1,7 +1,6 @@
 import React from "react";
 import { BrowserRouter, Switch, Route } from "react-router-dom";
 import Layout from "./pages/Layout";
-// import "font-awesome/css/font-awesome.min.css";
 import './style.css';
 
 import "jquery";
@@ -9,6 +8,7 @@ import "popper.js";
 import 'bootstrap/dist/js/bootstrap';
 import FormLogin from "./components/Login.Form";
 import Protected from './pages/Protected';
+import EncuestForm from './components/Encuest.Form';
 import "bootstrap/dist/css/bootstrap.min.css";
 
 // const PrivateRouter = ({ component: Component, ...rest }) => {
@@ -27,12 +27,14 @@ import "bootstrap/dist/css/bootstrap.min.css";
 // };
 
 function App() {
+
   return (
     <BrowserRouter>
       <Layout>
         <Switch>
           <Route exact path="/" component={FormLogin} />
           <Route path="/protected" component={Protected} />
+          <Route path="/create" component={EncuestForm} />
         </Switch>
       </Layout>
     </BrowserRouter>

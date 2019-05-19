@@ -1,7 +1,8 @@
 import React from "react";
-import {Link} from 'react-router-dom';
+import { Link, withRouter } from "react-router-dom";
 
 function Layout(props) {
+
   return (
     <React.Fragment>
       <nav className="navbar navbar-expand-lg navbar-dark bg-primary">
@@ -22,14 +23,32 @@ function Layout(props) {
 
         <div className="collapse navbar-collapse" id="navbarColor01">
           <ul className="navbar-nav mr-auto">
-            <li className="nav-item active">
-              <Link to="/" className="nav-link">
+            <li className="nav-item">
+              <Link
+                to="/"
+                className={props.location.pathname === "/" ? "nav-link active" : "nav-link"}
+              >
                 Inicio
               </Link>
             </li>
             <li className="nav-item">
-              <Link to="/protected" className="nav-link">
+              <Link
+                to="/protected"
+                className={
+                  props.location.pathname === "/protected" ? "nav-link active" : "nav-link"
+                }
+              >
                 Protected
+              </Link>
+            </li>
+            <li className="nav-item">
+              <Link
+                to="/create"
+                className={
+                  props.location.pathname === "/create" ? "nav-link active" : "nav-link"
+                }
+              >
+                Crear
               </Link>
             </li>
           </ul>
@@ -40,4 +59,4 @@ function Layout(props) {
   );
 }
 
-export default Layout;
+export default withRouter(Layout);
