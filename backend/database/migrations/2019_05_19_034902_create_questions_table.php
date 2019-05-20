@@ -15,7 +15,7 @@ class CreateQuestionsTable extends Migration
     {
         Schema::create('questions', function (Blueprint $table) {
             $table->bigIncrements('id');
-            // $table->
+            $table->text("data_encuest");
             $table->timestamps();
         });
     }

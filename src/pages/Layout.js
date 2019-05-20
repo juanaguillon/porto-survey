@@ -31,16 +31,7 @@ function Layout(props) {
                 Inicio
               </Link>
             </li>
-            <li className="nav-item">
-              <Link
-                to="/protected"
-                className={
-                  props.location.pathname === "/protected" ? "nav-link active" : "nav-link"
-                }
-              >
-                Protected
-              </Link>
-            </li>
+            
             <li className="nav-item">
               <Link
                 to="/create"

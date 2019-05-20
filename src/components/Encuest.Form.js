@@ -19,6 +19,7 @@ const SingleEncuest = props => {
                 name={"response_" + props.idQuestion}
                 className="custom-control-input"
                 onChange={props.change}
+                value="true"
               />
               <label className="custom-control-label" htmlFor={props.idQuestion + "yes"}>
                 Si
@@ -31,6 +32,7 @@ const SingleEncuest = props => {
                 name={"response_" + props.idQuestion}
                 className="custom-control-input"
                 onChange={props.change}
+                value="false"
               />
               <label className="custom-control-label" htmlFor={props.idQuestion + "no"}>
                 No
@@ -80,6 +82,13 @@ class EncuestForm extends React.Component {
 
   handleSubmit = e => {
     e.preventDefault();
+    let http = new HttpClass();
+    
+    http.post('question/create', {
+      key1: 'hello',
+      "key-2":"Hola que tal"
+    })
+    .then( f => console.log( f ));
     console.log(this.state)
   }
 
