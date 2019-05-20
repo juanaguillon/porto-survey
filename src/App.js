@@ -6,9 +6,11 @@ import './style.css';
 import "jquery";
 import "popper.js";
 import 'bootstrap/dist/js/bootstrap';
+import "bootstrap/dist/css/bootstrap.min.css";
+
 import Protected from './pages/Protected';
 import EncuestForm from './components/Encuest.Form';
-import "bootstrap/dist/css/bootstrap.min.css";
+import Encuest from './pages/Encuest';
 
 // const PrivateRouter = ({ component: Component, ...rest }) => {
 //   return (
@@ -34,6 +36,7 @@ function App() {
           {/* <Route exact path="/" component={FormLogin} /> */}
           <Route exact path="/" component={Protected} />
           <Route exact path="/create" component={EncuestForm} />
+          <Route exact path="/questions" component={Encuest} />
         </Switch>
       </Layout>
     </BrowserRouter>

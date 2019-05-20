@@ -15,6 +15,12 @@ class CreateQuestionsTable extends Migration
     {
         Schema::create('questions', function (Blueprint $table) {
             $table->bigIncrements('id');
+            $table->string("full_name");
+            $table->string("full_lastname");
+            $table->string("full_email");
+            $table->integer("full_phone");
+            $table->string("full_address");
+            $table->string("full_medio");
             $table->text("data_encuest");
             $table->timestamps();
         });

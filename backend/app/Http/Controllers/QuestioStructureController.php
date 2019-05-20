@@ -33,7 +33,7 @@ class QuestioStructureController extends Controller{
 
   public function getAll( ){
     $question = new Question();
-    return response()->json( $question->orderBy("updated_at","DESC")->get());
+    return response()->json( $question->orderBy("updated_at","ASC")->get());
   }
   
 }
