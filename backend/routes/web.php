@@ -22,6 +22,7 @@ $router->group(["prefix" => "user"], function () use ($router) {
 $router->group(["prefix" => "structure"], function () use ($router) {
 	$router->post('/create', "QuestioStructureController@create");
 	$router->get('/all', "QuestioStructureController@getAll");
+	$router->post('/edit', "QuestioStructureController@editStructure");
 });
 
 $router->group(["prefix" => "question"], function ( ) use ( $router ){

@@ -1,9 +1,17 @@
+/**
+ * Formulario de encuesta
+ * RUTA: /create
+ */
+
 import React from "react";
 import HttpClass from "../services/Http";
 import "./Encuest.Form.css";
 
+import { Link } from "react-router-dom";
+
 // Componentes
 import AlertElement from "./General/Alert.Element";
+import ModalElement from "./General/Modal.Element";
 
 /** Mostrar la estructura de una pregunta única guardada en la base de datos.
  * Debe ser necesario pasar el prop typeQuestion ( Si es abierta o cerrada la pregunta) y textQuiestion (El texto que será mostrado en el label).
@@ -98,31 +106,35 @@ class EncuestForm extends React.Component {
     });
   };
 
+  handleCloseModal = e => {
+    this.setState({ show_alert: false });
+  };
+
   /**
    * Actuar cuando se haga submit en el formulario de encuesta
    */
   handleSubmit = e => {
     e.preventDefault();
 
-    if (this.state.full_name === "") {
+    if (!this.state.full_name || this.state.full_name === "") {
       this.setState({
         show_alert: true,
         text_alert: "El nombre es requerido."
       });
-    } else if (this.state.full_lastname === "") {
+    } else if (!this.state.full_lastname || this.state.full_lastname === "") {
       this.setState({
         show_alert: true,
         text_alert: "El apellido es requerido."
       });
-    } else if (this.state.full_email === "") {
+    } else if (!this.state.full_email || this.state.full_email === "") {
       this.setState({
         show_alert: true,
         text_alert: "El email es requerido"
       });
-    } else if (this.state.full_phone === "") {
+    } else if (!this.state.full_phone || this.state.full_phone === "") {
       this.setState({
         show_alert: true,
-        text_alert: "El email es requerido"
+        text_alert: "El Teléfono es requerido"
       });
     } else if (this.state.full_phone && this.state.full_phone.length !== 10) {
       this.setState({
@@ -130,6 +142,7 @@ class EncuestForm extends React.Component {
         text_alert: "El número de teléfono no es correcto."
       });
     } else if (
+      !this.state.full_medio ||
       this.state.full_medio === "" ||
       this.state.full_medio === "null"
     ) {
@@ -140,11 +153,9 @@ class EncuestForm extends React.Component {
       });
     } else {
       let http = new HttpClass();
-      delete this.state.questions;
-      delete this.state.show_alert;
-      delete this.state.text_alert;
-      delete this.state.alert_type;
+
       http.post("question/create", this.state).then(response => {
+        console.log(response);
         if (response) {
           this.setState({
             show_alert: true,
@@ -152,6 +163,8 @@ class EncuestForm extends React.Component {
               "Se ha guardado correctamente. Gracias por responder esta encuesta.",
             alert_type: "success"
           });
+
+          document.getElementById("encuest_form").reset();
         } else {
           this.setState({
             show_alert: true,
@@ -165,103 +178,120 @@ class EncuestForm extends React.Component {
 
   render() {
     return (
-      <section className="section" id="section_encuest_form">
-        <AlertElement show={this.state.show_alert} type={this.state.alert_type}>
-          {this.state.text_alert}
-        </AlertElement>
-        <div className="form-container">
-          <form id="encuest_form" onSubmit={this.handleSubmit}>
-            <div className="form-group">
-              <label htmlFor="full_name">Nombre Completo</label>
-              <input
-                onChange={this.handleChangeInput}
-                type="text"
-                name="full_name"
-                id="full_name"
-                className="form-control"
-              />
-            </div>
-            <div className="form-group">
-              <label htmlFor="full_lastname">Apellidos Completos</label>
-              <input
-                onChange={this.handleChangeInput}
-                type="text"
-                name="full_lastname"
-                id="full_lastname"
-                className="form-control"
-              />
-            </div>
-            <div className="form-group">
-              <label htmlFor="full_email">Email</label>
-              <input
-                onChange={this.handleChangeInput}
-                type="email"
-                name="full_email"
-                id="full_email"
-                className="form-control"
-              />
-            </div>
-            <div className="form-group">
-              <label htmlFor="full_phone">Teléfono</label>
-              <input
-                onChange={this.handleChangeInput}
-                type="number"
-                name="full_phone"
-                id="full_phone"
-                className="form-control"
-              />
-            </div>
-            <div className="form-group">
-              <label htmlFor="full_address">Barrio donde Reside</label>
-              <input
-                onChange={this.handleChangeInput}
-                type="text"
-                name="full_address"
-                id="full_address"
-                className="form-control"
-              />
-            </div>
-            <div className="form-group">
-              <label htmlFor="full_medio">
-                Medio por el cual llegó al Porto
-              </label>
-              <select
-                className="custom-select"
-                name="full_medio"
-                id="full_medio"
-                onChange={this.handleChangeInput}
-              >
-                <option value="null">Seleccione...</option>
-                <option value="red_social">Redes Sociales</option>
-                <option value="referido">Referido</option>
-                <option value="publicidad">Publicidad de Empresa</option>
-                <option value="other">Otro</option>
-              </select>
-            </div>
+      <React.Fragment>
+        <ModalElement
+          close={this.handleCloseModal}
+          id="modal_alert"
+          show={this.state.show_alert}
+        >
+          <AlertElement
+            id="alerting_show"
+            show={this.state.show_alert}
+            type={this.state.alert_type}
+          >
+            {this.state.text_alert}
+          </AlertElement>
+        </ModalElement>
 
-            {this.state.questions.map(question => {
-              return (
-                <SingleEncuest
-                  idQuestion={question.id}
-                  key={question.id}
-                  typeQuestion={question.type_field}
-                  textQuestion={question.text_field}
-                  change={this.handleChangeInput.bind(this)}
+        <section className="section" id="section_encuest_form">
+          <div className="form-container">
+            <Link to='/' className="btn btn-outline-primary mb-3">
+                <i className="fas fa-arrow-circle-left fa-lg mr-2" />
+                Atras
+            </Link>
+            <form id="encuest_form" onSubmit={this.handleSubmit}>
+              <div className="form-group">
+                <label htmlFor="full_name">Nombre Completo</label>
+                <input
+                  onChange={this.handleChangeInput}
+                  type="text"
+                  name="full_name"
+                  id="full_name"
+                  className="form-control"
                 />
-              );
-            })}
+              </div>
+              <div className="form-group">
+                <label htmlFor="full_lastname">Apellidos Completos</label>
+                <input
+                  onChange={this.handleChangeInput}
+                  type="text"
+                  name="full_lastname"
+                  id="full_lastname"
+                  className="form-control"
+                />
+              </div>
+              <div className="form-group">
+                <label htmlFor="full_email">Email</label>
+                <input
+                  onChange={this.handleChangeInput}
+                  type="email"
+                  name="full_email"
+                  id="full_email"
+                  className="form-control"
+                />
+              </div>
+              <div className="form-group">
+                <label htmlFor="full_phone">Teléfono</label>
+                <input
+                  onChange={this.handleChangeInput}
+                  type="number"
+                  name="full_phone"
+                  id="full_phone"
+                  className="form-control"
+                />
+              </div>
+              <div className="form-group">
+                <label htmlFor="full_address">Barrio donde Reside</label>
+                <input
+                  onChange={this.handleChangeInput}
+                  type="text"
+                  name="full_address"
+                  id="full_address"
+                  className="form-control"
+                />
+              </div>
+              <div className="form-group">
+                <label htmlFor="full_medio">
+                  Medio por el cual llegó al Porto
+                </label>
+                <select
+                  className="custom-select"
+                  name="full_medio"
+                  id="full_medio"
+                  onChange={this.handleChangeInput}
+                >
+                  <option value="null">Seleccione...</option>
+                  <option value="red_social">Redes Sociales</option>
+                  <option value="referido">Referido</option>
+                  <option value="publicidad">Publicidad de Empresa</option>
+                  <option value="other">Otro</option>
+                </select>
+              </div>
 
-            <div className="form-group">
-              <input
-                type="submit"
-                id="submit_encuest_form"
-                value="Guardar encuesta"
-                className="btn btn-success"
-              />
-            </div>
-          </form>
-        </div>
-      </section>
+              {this.state.questions.map(question => {
+                return (
+                  <SingleEncuest
+                    idQuestion={question.id}
+                    key={question.id}
+                    typeQuestion={question.type_field}
+                    textQuestion={question.text_field}
+                    change={this.handleChangeInput.bind(this)}
+                  />
+                );
+              })}
+
+              <div className="form-group">
+                <input
+                  type="submit"
+                  id="submit_encuest_form"
+                  value="Guardar encuesta"
+                  className="btn btn-success"
+                />
+              </div>
+            </form>
+          </div>
+        </section>
+      </React.Fragment>
     );
   }
 }

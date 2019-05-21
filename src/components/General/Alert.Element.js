@@ -10,7 +10,7 @@ const AlertElement = prop => {
   if ( prop.show ){
 
     return (
-      <div className={"alert alert-" + typeOfWarning} role="alert">
+      <div id={prop.id || ""} className={"alert alert-" + typeOfWarning} role="alert">
         {prop.children}
       </div>
     );

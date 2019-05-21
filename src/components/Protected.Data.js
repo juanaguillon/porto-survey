@@ -21,14 +21,14 @@ const CardData = props => {
         <div className="card-body">
           <p className="text-muted">{props.text}</p>
         </div>
-        {/* <div className="card-footer text-muted d-flex justify-content-between">
-          <button className="btn btn-primary btn-sm">
+        <div className="card-footer text-muted d-flex justify-content-between">
+          <button onClick={props.openEdit} className="btn btn-primary btn-sm">
             <i className="fas fa-edit" />
           </button>
-          <button className="btn btn-danger btn-sm ">
+          {/* <button className="btn btn-danger btn-sm ">
             <i className="fas fa-trash-alt" />
-          </button>
-        </div> */}
+          </button> */}
+        </div>
       </div>
     </div>
   );
@@ -45,6 +45,8 @@ function ProtectedData(props) {
               className="border-success"
               text={data.text_field}
               type={data.type_field}
+              // Ver Pages/Protected.js para ver este comportamiento
+              openEdit={props.openEdit.bind(null, data.id)}
             />
           );
         })}
@@ -54,6 +56,8 @@ function ProtectedData(props) {
               key={index}
               text={data.text_field}
               type={data.type_field}
+              // Ver Pages/Protected.js para ver este comportamiento
+              openEdit={props.openEdit.bind(null, data.id)}
             />
           );
         })}
