@@ -1,6 +1,9 @@
 import React from "react";
 import HttpClass from "../services/Http";
-import './Encuest.Form.css';
+import "./Encuest.Form.css";
+
+// Componentes
+import AlertElement from "./General/Alert.Element";
 
 /** Mostrar la estructura de una pregunta única guardada en la base de datos.
  * Debe ser necesario pasar el prop typeQuestion ( Si es abierta o cerrada la pregunta) y textQuiestion (El texto que será mostrado en el label).
@@ -65,7 +68,12 @@ class EncuestForm extends React.Component {
     super(props);
 
     this.state = {
-      questions: []
+      questions: [],
+      text_alert: "",
+      // Comprobar valores correctos del formulario
+      show_alert: false,
+      // Tipo de alerta, success si se envia, danger si hay problema con la comprobacion de valores en el formulario
+      alert_type: "danger"
     };
   }
 
@@ -95,21 +103,77 @@ class EncuestForm extends React.Component {
    */
   handleSubmit = e => {
     e.preventDefault();
-    let http = new HttpClass();
 
-    delete this.state.questions;
-
-    http.post("question/create", this.state).then(f => console.log(f));
+    if (this.state.full_name === "") {
+      this.setState({
+        show_alert: true,
+        text_alert: "El nombre es requerido."
+      });
+    } else if (this.state.full_lastname === "") {
+      this.setState({
+        show_alert: true,
+        text_alert: "El apellido es requerido."
+      });
+    } else if (this.state.full_email === "") {
+      this.setState({
+        show_alert: true,
+        text_alert: "El email es requerido"
+      });
+    } else if (this.state.full_phone === "") {
+      this.setState({
+        show_alert: true,
+        text_alert: "El email es requerido"
+      });
+    } else if (this.state.full_phone && this.state.full_phone.length !== 10) {
+      this.setState({
+        show_alert: true,
+        text_alert: "El número de teléfono no es correcto."
+      });
+    } else if (
+      this.state.full_medio === "" ||
+      this.state.full_medio === "null"
+    ) {
+      this.setState({
+        show_alert: true,
+        text_alert:
+          "Por favor, escoja un medio por el cual, ha llegado al porto."
+      });
+    } else {
+      let http = new HttpClass();
+      delete this.state.questions;
+      delete this.state.show_alert;
+      delete this.state.text_alert;
+      delete this.state.alert_type;
+      http.post("question/create", this.state).then(response => {
+        if (response) {
+          this.setState({
+            show_alert: true,
+            text_alert:
+              "Se ha guardado correctamente. Gracias por responder esta encuesta.",
+            alert_type: "success"
+          });
+        } else {
+          this.setState({
+            show_alert: true,
+            text_alert: "Error al guardar la encuesta, intente nuevamente",
+            alert_type: "danger"
+          });
+        }
+      });
+    }
   };
 
   render() {
     return (
       <section className="section" id="section_encuest_form">
+        <AlertElement show={this.state.show_alert} type={this.state.alert_type}>
+          {this.state.text_alert}
+        </AlertElement>
         <div className="form-container">
           <form id="encuest_form" onSubmit={this.handleSubmit}>
             <div className="form-group">
               <label htmlFor="full_name">Nombre Completo</label>
-              <input 
+              <input
                 onChange={this.handleChangeInput}
                 type="text"
                 name="full_name"
@@ -119,7 +183,7 @@ class EncuestForm extends React.Component {
             </div>
             <div className="form-group">
               <label htmlFor="full_lastname">Apellidos Completos</label>
-              <input 
+              <input
                 onChange={this.handleChangeInput}
                 type="text"
                 name="full_lastname"
@@ -129,7 +193,7 @@ class EncuestForm extends React.Component {
             </div>
             <div className="form-group">
               <label htmlFor="full_email">Email</label>
-              <input 
+              <input
                 onChange={this.handleChangeInput}
                 type="email"
                 name="full_email"
@@ -139,7 +203,7 @@ class EncuestForm extends React.Component {
             </div>
             <div className="form-group">
               <label htmlFor="full_phone">Teléfono</label>
-              <input 
+              <input
                 onChange={this.handleChangeInput}
                 type="number"
                 name="full_phone"
@@ -149,7 +213,7 @@ class EncuestForm extends React.Component {
             </div>
             <div className="form-group">
               <label htmlFor="full_address">Barrio donde Reside</label>
-              <input 
+              <input
                 onChange={this.handleChangeInput}
                 type="text"
                 name="full_address"

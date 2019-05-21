@@ -19,16 +19,16 @@ const CardData = props => {
       <div className={className + " card"}>
         <h5 className="card-header">{typeText}</h5>
         <div className="card-body">
-          <h5 className="card-title text-muted">{props.text}</h5>
+          <p className="text-muted">{props.text}</p>
         </div>
-        <div className="card-footer text-muted d-flex justify-content-between">
+        {/* <div className="card-footer text-muted d-flex justify-content-between">
           <button className="btn btn-primary btn-sm">
             <i className="fas fa-edit" />
           </button>
           <button className="btn btn-danger btn-sm ">
             <i className="fas fa-trash-alt" />
           </button>
-        </div>
+        </div> */}
       </div>
     </div>
   );

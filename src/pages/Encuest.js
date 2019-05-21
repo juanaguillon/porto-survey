@@ -4,11 +4,23 @@ import * as $ from "jquery";
 
 import "./Encuest.css";
 
+// Componentes
+import SpinnerElement from "../components/General/Spinner.Element";
+import AlertElement from "../components/General/Alert.Element";
+
 const LiItem = props => {
+  let valueProp = "";
+  if (props.valVal === "true" || props.valVal === "false") {
+    valueProp = props.valVal === "true" ? "Si" : "No";
+  } else {
+    valueProp = props.valVal;
+  }
   return (
     <li className="list-group-item">
-      <span className="text-dark">{props.keyVal.replace(/-/g, " ")}</span>
-      <span className="text-muted">{props.valVal}</span>
+      <span className="text-dark text-capitalize">
+        {props.keyVal.replace(/-/g, " ")}:{" "}
+      </span>
+      <span className="text-muted">{valueProp}</span>
     </li>
   );
 };
@@ -18,7 +30,8 @@ const SingleQuestion = props => {
   let staticQ = props.dataEncuest;
   /** Preguntas / Respuestas Dinámicas */
   let dynamicQArr = staticQ.data_encuest;
-  let dynamicQHTML = [staticQ.data_encuest];
+  /** HTML a ser mostrado */
+  let dynamicQHTML = [];
 
   let fullName = staticQ.full_name + " " + staticQ.full_lastname;
 
@@ -42,14 +55,13 @@ const SingleQuestion = props => {
 
   for (let keyDynamic in dynamicQArr) {
     dynamicQHTML.push(
-      <LiItem keyval={keyDynamic} valVal={dynamicQArr[keyDynamic]} />
+      <LiItem keyVal={keyDynamic} valVal={dynamicQArr[keyDynamic]} />
     );
-
   }
 
   return (
     <React.Fragment>
-      <div className="card">
+      <div className="card my-1">
         <a
           className="collapsed no-underline"
           aria-expanded="false"
@@ -82,6 +94,7 @@ const SingleQuestion = props => {
                 <span className="text-dark">Medio: </span>
                 <span className="text-muted">{medio}</span>
               </li>
+              {dynamicQHTML}
             </ul>
           </div>
         </div>
@@ -91,30 +104,32 @@ const SingleQuestion = props => {
 };
 
 /**
- * Mostrar todas las encuestas creadas.
+ * Class: Mostrar todas las encuestas creadas.
  */
-
 class EncuestData extends React.Component {
   constructor(props) {
     super(props);
 
     this.state = {
+      loading: true,
       data: [],
-      // Se guardarán las preguntas dinámicas.
-      strucureQuestions: []
+      notFound: false
     };
   }
 
   componentDidMount() {
     let http = new HttpClass();
     http.get("question/all").then(all => {
+      console.log(all);
+      if (all.length < 1) {
+        this.setState({
+          notFound: true
+        });
+      }
       this.setState({
+        loading: false,
         data: all
       });
-    });
-
-    http.get("structure/all").then(response => {
-      this.setState({ strucureQuestions: response });
     });
   }
 
@@ -126,6 +141,11 @@ class EncuestData extends React.Component {
     return (
       <React.Fragment>
         <section className="section">
+          <SpinnerElement show={this.state.loading} />
+          <AlertElement show={this.state.notFound} >
+            No se han encontrado preguntas.
+          </AlertElement>
+
           {this.state.data.map(singleQuestion => {
             return (
               <SingleQuestion

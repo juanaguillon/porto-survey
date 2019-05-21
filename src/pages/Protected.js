@@ -53,7 +53,7 @@ class Protected extends React.Component {
             formData: currentFormData
           });
         } else {
-          console.log(response);
+          alert(response);
         }
       })
       .catch(erro => {
