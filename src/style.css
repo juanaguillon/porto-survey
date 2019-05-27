@@ -1,12 +1,27 @@
-section.section{
+section.section {
   padding: 50px 0;
 }
 
-.modal.show{
+.modal.show {
   display: block;
   background: #00000094;
 }
 
-.pointer{
+.pointer {
   cursor: pointer;
+}
+
+.bg_porto {
+  background: #3f3f3f;
+}
+
+.btn.btn-porto {
+  color: #171717;
+  font-weight: 500;
+  background-color: #f3bc68;
+  border-color: #f3bc68;
+}
+.btn.btn-porto:hover {
+  background-color: #ffbd5a;
+  border-color: #ffbf5e;
 }

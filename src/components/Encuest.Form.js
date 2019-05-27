@@ -2,16 +2,17 @@
  * Formulario de encuesta
  * RUTA: /create
  */
-
 import React from "react";
 import HttpClass from "../services/Http";
 import "./Encuest.Form.css";
 
-import { Link } from "react-router-dom";
-
 // Componentes
 import AlertElement from "./General/Alert.Element";
 import ModalElement from "./General/Modal.Element";
+
+import logo from "../images/logo_porto.svg";
+
+import StarRatingComponent from "react-star-rating-component";
 
 /** Mostrar la estructura de una pregunta única guardada en la base de datos.
  * Debe ser necesario pasar el prop typeQuestion ( Si es abierta o cerrada la pregunta) y textQuiestion (El texto que será mostrado en el label).
@@ -20,7 +21,7 @@ const SingleEncuest = props => {
   return (
     <React.Fragment>
       <div className="form-group">
-        <label>{props.textQuestion}</label>
+        <label className="text-white">{props.textQuestion}</label>
         {props.typeQuestion === "yes_no" ? (
           <React.Fragment>
             <div className="custom-control custom-radio">
@@ -33,7 +34,7 @@ const SingleEncuest = props => {
                 value="true"
               />
               <label
-                className="custom-control-label"
+                className="custom-control-label text-white"
                 htmlFor={props.idQuestion + "yes"}
               >
                 Si
@@ -49,7 +50,7 @@ const SingleEncuest = props => {
                 value="false"
               />
               <label
-                className="custom-control-label"
+                className="custom-control-label text-white"
                 htmlFor={props.idQuestion + "no"}
               >
                 No
@@ -91,6 +92,8 @@ class EncuestForm extends React.Component {
       this.setState({ questions: data })
     );
   }
+
+
 
   /**
    * Obtener todas las estructuras de preguntas desde la base de datos.
@@ -176,6 +179,13 @@ class EncuestForm extends React.Component {
     }
   };
 
+  handleStart(e, f, n){
+    console.log(e, f, n)
+    this.setState({
+      [n]: e
+    });
+  }
+
   render() {
     return (
       <React.Fragment>
@@ -195,13 +205,14 @@ class EncuestForm extends React.Component {
 
         <section className="section" id="section_encuest_form">
           <div className="form-container">
-            <Link to='/' className="btn btn-outline-primary mb-3">
-                <i className="fas fa-arrow-circle-left fa-lg mr-2" />
-                Atras
-            </Link>
+            <div className="logo_container">
+              <img src={logo} alt="Logo Porto" className="logo_porto" />
+            </div>
             <form id="encuest_form" onSubmit={this.handleSubmit}>
               <div className="form-group">
-                <label htmlFor="full_name">Nombres</label>
+                <label className="text-white" htmlFor="full_name">
+                  Nombres
+                </label>
                 <input
                   onChange={this.handleChangeInput}
                   type="text"
@@ -211,7 +222,9 @@ class EncuestForm extends React.Component {
                 />
               </div>
               <div className="form-group">
-                <label htmlFor="full_lastname">Apellidos</label>
+                <label className="text-white" htmlFor="full_lastname">
+                  Apellidos
+                </label>
                 <input
                   onChange={this.handleChangeInput}
                   type="text"
@@ -221,7 +234,9 @@ class EncuestForm extends React.Component {
                 />
               </div>
               <div className="form-group">
-                <label htmlFor="full_email">Email</label>
+                <label className="text-white" htmlFor="full_email">
+                  Email
+                </label>
                 <input
                   onChange={this.handleChangeInput}
                   type="email"
@@ -231,7 +246,9 @@ class EncuestForm extends React.Component {
                 />
               </div>
               <div className="form-group">
-                <label htmlFor="full_phone">Teléfono</label>
+                <label className="text-white" htmlFor="full_phone">
+                  Teléfono
+                </label>
                 <input
                   onChange={this.handleChangeInput}
                   type="number"
@@ -241,7 +258,9 @@ class EncuestForm extends React.Component {
                 />
               </div>
               <div className="form-group">
-                <label htmlFor="full_address">Barrio donde Reside</label>
+                <label className="text-white" htmlFor="full_address">
+                  Barrio donde Reside
+                </label>
                 <input
                   onChange={this.handleChangeInput}
                   type="text"
@@ -251,7 +270,7 @@ class EncuestForm extends React.Component {
                 />
               </div>
               <div className="form-group">
-                <label htmlFor="full_medio">
+                <label className="text-white" htmlFor="full_medio">
                   Medio por el cual llegó al Porto
                 </label>
                 <select
@@ -268,6 +287,17 @@ class EncuestForm extends React.Component {
                 </select>
               </div>
 
+              <div className="form-group">
+                <label className="text-white">
+                  Califique el porto de 1 a 5. Siendo 1 menor calificación y
+                  5 la mayor calificación.
+                </label>
+                <StarRatingComponent
+                  name="rating"
+                  emptyStarColor="#fff5e8"
+                  onStarClick={this.handleStart.bind(this)}
+                />
+              </div>
               {this.state.questions.map(question => {
                 return (
                   <SingleEncuest
@@ -279,13 +309,12 @@ class EncuestForm extends React.Component {
                   />
                 );
               })}
-
               <div className="form-group">
                 <input
                   type="submit"
                   id="submit_encuest_form"
-                  value="Guardar encuesta"
-                  className="btn btn-success"
+                  value="Enviar"
+                  className="btn btn-porto"
                 />
               </div>
             </form>

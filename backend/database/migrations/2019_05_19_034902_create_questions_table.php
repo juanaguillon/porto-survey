@@ -21,6 +21,7 @@ class CreateQuestionsTable extends Migration
             $table->string("full_phone");
             $table->string("full_address");
             $table->string("full_medio");
+            $table->integer("rating");
             $table->text("data_encuest");
             $table->timestamps();
         });

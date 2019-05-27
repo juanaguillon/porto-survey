@@ -2,7 +2,6 @@ import React from "react";
 import { Link, withRouter } from "react-router-dom";
 
 function Layout(props) {
-
   return (
     <React.Fragment>
       {props.location.pathname !== "/create" ? (
@@ -57,8 +56,18 @@ function Layout(props) {
             </ul>
           </div>
         </nav>
-      ) : ""}
-      <div className="container">{props.children}</div>
+      ) : (
+        ""
+      )}
+      <div
+        className={
+          props.location.pathname === "/create"
+            ? "bg_porto root_container"
+            : "root_container"
+        }
+      >
+        <div className="container">{props.children}</div>
+      </div>
     </React.Fragment>
   );
 }

@@ -8,6 +8,8 @@ import "./Encuest.css";
 import SpinnerElement from "../components/General/Spinner.Element";
 import AlertElement from "../components/General/Alert.Element";
 
+import StarRatingComponent from "react-star-rating-component";
+
 const LiItem = props => {
   let valueProp = "";
   if (props.valVal === "true" || props.valVal === "false") {
@@ -55,7 +57,11 @@ const SingleQuestion = props => {
 
   for (let keyDynamic in dynamicQArr) {
     dynamicQHTML.push(
-      <LiItem keyVal={keyDynamic} valVal={dynamicQArr[keyDynamic]} />
+      <LiItem
+        key={keyDynamic}
+        keyVal={keyDynamic}
+        valVal={dynamicQArr[keyDynamic]}
+      />
     );
   }
 
@@ -77,6 +83,9 @@ const SingleQuestion = props => {
         <div id={"collapse_" + staticQ.id} className="collapse">
           <div className="card-body">
             <ul className="list-group list-group-flush">
+              <li className="list-group-item">
+                <StarRatingComponent name="reading_value_star" editing={false} value={staticQ.rating} />
+              </li>
               <li className="list-group-item">
                 <span className="text-dark">Email: </span>
                 <span className="text-muted">{staticQ.full_email}</span>
@@ -132,7 +141,7 @@ class EncuestData extends React.Component {
   }
 
   handleCollapse = data => {
-    $(".collapse").removeClass('show');
+    $(".collapse").removeClass("show");
     $("#collapse_" + data).toggleClass("show");
   };
 
@@ -140,73 +149,53 @@ class EncuestData extends React.Component {
     var JSONData = this.state.data;
     var ReportTitle = "preguntas_" + new Date().getTime();
     var ShowLabel = "true";
-    //If JSONData is not an object then JSON.parse will parse the JSON string in an Object
     var arrData = typeof JSONData != "object" ? JSON.parse(JSONData) : JSONData;
 
     var CSV = "sep=," + "\r\n\n";
 
-    //This condition will generate the Label/Header
+    var row = "";
     if (ShowLabel) {
-      var row = "";
+      row = "";
 
-      //This loop will extract the label from 1st index of on array
       for (var index in arrData[0]) {
-        //Now convert each value to string and comma-seprated
         row += index + ",";
       }
 
       row = row.slice(0, -1);
-
-      //append Label row with line break
       CSV += row + "\r\n";
     }
 
-    //1st loop is to extract each row
     for (var i = 0; i < arrData.length; i++) {
-      var row = "";
+      row = "";
 
-      //2nd loop will extract each column and convert it in string comma-seprated
-      for (var index in arrData[i]) {
-        row += '"' + arrData[i][index] + '",';
+      for (var ind2 in arrData[i]) {
+        row += '"' + arrData[i][ind2] + '",';
       }
 
       row.slice(0, row.length - 1);
 
-      //add a line break after each row
       CSV += row + "\r\n";
     }
 
-    if (CSV == "") {
+    if (CSV === "") {
       alert("Invalid data");
       return;
     }
 
-    //Generate a file name
     var fileName = "MyReport_";
-    //this will remove the blank-spaces from the title and replace it with an underscore
     fileName += ReportTitle.replace(/ /g, "_");
-
-    //Initialize file format you want csv or xls
     var uri = "data:text/csv;charset=utf-8," + escape(CSV);
 
-    // Now the little tricky part.
-    // you can use either>> window.open(uri);
-    // but this will not work in some browsers
-    // or you will not get the correct file extension
-
-    //this trick will generate a temp <a /> tag
     var link = document.createElement("a");
     link.href = uri;
 
-    //set the visibility hidden so it will not effect on your web-layout
     link.style = "visibility:hidden";
     link.download = fileName + ".csv";
 
-    //this part will append the anchor tag and remove it after automatic click
     document.body.appendChild(link);
     link.click();
     document.body.removeChild(link);
-  }
+  };
 
   render() {
     return (
@@ -232,7 +221,7 @@ class EncuestData extends React.Component {
               onClick={this.JSONToCSVConvertor}
               className="btn btn-primary"
             >
-              <i className="fas fa-download" />
+              <i className="fas fa-download mr-2" />
               Descargar Excel
             </button>
           )}

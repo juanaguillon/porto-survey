@@ -24,10 +24,10 @@ class QuestionController extends Controller
 			unset($theRequest["text_alert"]);
 			/** Obtener las preguntas estáticas */
 
-			$staticQuestions = array_slice($theRequest, 0, 6);
+			$staticQuestions = array_slice($theRequest, 0, 7);
 
 			/** Obtener las preguntas dinámicas, en teoria, las preguntas estructuradas que están guardadas en la base de datos. */
-			$dynamicQuestions = array_slice($theRequest, 6);
+			$dynamicQuestions = array_slice($theRequest, 7);
 
 			$dataToSave = $staticQuestions;
 			$dataToSave["data_encuest"] = json_encode($dynamicQuestions);
