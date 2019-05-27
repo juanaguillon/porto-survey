@@ -132,6 +132,7 @@ class EncuestData extends React.Component {
   }
 
   handleCollapse = data => {
+    $(".collapse").removeClass('show');
     $("#collapse_" + data).toggleClass("show");
   };
 

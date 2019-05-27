@@ -8,10 +8,10 @@ class HttpClass {
   dataFetch = {};
 
   // Dev
-  // constructor(mainUrl = "http://localhost:80") {
+  constructor(mainUrl = "http://localhost:80") {
 
   // Build
-  constructor(mainUrl = "http://www.intuitionstudio.co/porto_backend/public") {
+  // constructor(mainUrl = "http://www.intuitionstudio.co/porto_backend/public") {
     this.mainUrl = mainUrl;
   }
 

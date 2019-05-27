@@ -136,7 +136,7 @@ class EncuestForm extends React.Component {
         show_alert: true,
         text_alert: "El Teléfono es requerido"
       });
-    } else if (this.state.full_phone && this.state.full_phone.length !== 10) {
+    } else if (this.state.full_phone && this.state.full_phone.length < 7) {
       this.setState({
         show_alert: true,
         text_alert: "El número de teléfono no es correcto."
@@ -201,7 +201,7 @@ class EncuestForm extends React.Component {
             </Link>
             <form id="encuest_form" onSubmit={this.handleSubmit}>
               <div className="form-group">
-                <label htmlFor="full_name">Nombre Completo</label>
+                <label htmlFor="full_name">Nombres</label>
                 <input
                   onChange={this.handleChangeInput}
                   type="text"
@@ -211,7 +211,7 @@ class EncuestForm extends React.Component {
                 />
               </div>
               <div className="form-group">
-                <label htmlFor="full_lastname">Apellidos Completos</label>
+                <label htmlFor="full_lastname">Apellidos</label>
                 <input
                   onChange={this.handleChangeInput}
                   type="text"

@@ -39,7 +39,7 @@ function Layout(props) {
 
               <li className="nav-item">
                 <Link to="/create" className="nav-link">
-                  Crear
+                  Encuesta
                 </Link>
               </li>
               <li className="nav-item">
@@ -51,7 +51,7 @@ function Layout(props) {
                       : "nav-link"
                   }
                 >
-                  Preguntas
+                  Base de Datos
                 </Link>
               </li>
             </ul>
