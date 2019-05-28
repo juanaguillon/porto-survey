@@ -8,6 +8,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use Carbon\Carbon as Carbon;
 use App\QuestionModel as Question;
+use Illuminate\Support\Facades\Mail;
 
 class QuestionController extends Controller
 {
@@ -32,12 +33,30 @@ class QuestionController extends Controller
 			$dataToSave = $staticQuestions;
 			$dataToSave["data_encuest"] = json_encode($dynamicQuestions);
 
-			$dataToSave["created_at"] = Carbon::now()->toDateTimeString();
-			$dataToSave["updated_at"] = Carbon::now()->toDateTimeString();
+			$dataToSave["created_at"] = Carbon::now('America/Bogota')->toDateTimeString();
+			$dataToSave["updated_at"] = Carbon::now('America/Bogota')->toDateTimeString();
 
 			/** Obtener el valor si se ha guardado satisfactoriamente. */
 			$dataSaved = Question::insert($dataToSave);
 
+
+			$data = array(
+				"name" => $dataToSave["full_name"],
+				"lastname" => $dataToSave["full_lastname"],
+				"email" => $dataToSave["full_email"],
+				"phone" => $dataToSave["full_phone"],
+				"place_reside" => $dataToSave["full_address"],
+				"red_come"     => $dataToSave["full_medio"],
+				"rating"     => $dataToSave["rating"]
+			);
+			
+			Mail::send("emails.welcome", $data, function( $message ){
+
+				$message->from('juanaguilloncar@gmail.com');
+				$message->to("miloca.98@hotmail.com")->subject('Nueva encuesta registrada');
+				
+			} );
+			
 			return response()->json($dataSaved);
 		} catch (\Throwable $th) {
 			return response()->json(array(

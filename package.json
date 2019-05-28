@@ -1,6 +1,7 @@
 {
   "name": "porto-survey",
   "version": "0.1.0",
+  "homepage": "http://intuitionstudio.co/porto_front",
   "private": true,
   "dependencies": {
     "bootstrap": "^4.3.1",
