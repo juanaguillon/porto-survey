@@ -8,10 +8,16 @@ class HttpClass {
   dataFetch = {};
 
   // Dev
-  constructor(mainUrl = "http://localhost:80") {
+  constructor(mainUrl = "") {
+    // console.log(process.env.REACT_APP_BACKEND_URL_DEV);
 
-  // Build
-  // constructor(mainUrl = "http://www.intuitionstudio.co/porto_backend/public") {
+   if (mainUrl === "") {
+     if (!process.env.NODE_ENV || process.env.NODE_ENV === "development") {
+       mainUrl = process.env.REACT_APP_BACKEND_URL_DEV;
+     } else {
+       mainUrl = process.env.REACT_APP_BACKEND_URL;
+     }
+   }
     this.mainUrl = mainUrl;
   }
 
